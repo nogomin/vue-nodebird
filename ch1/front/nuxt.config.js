@@ -3,8 +3,10 @@ module.exports = {
         title: 'NodeBird',
     },
     modules: [
-        '@nuxtjs/vuetify',
         '@nuxtjs/axios',
+    ],
+    devModules: [
+        '@nuxtjs/vuetify',
     ],
     plugins: [],
     vuetify: {

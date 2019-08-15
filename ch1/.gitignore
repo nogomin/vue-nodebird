@@ -3,3 +3,7 @@ node_modules
 
 #Nuxt build
 .nuxt
+
+#eslint
+.eslintrc
+.eslintignore
