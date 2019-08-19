@@ -5,7 +5,7 @@
         <v-toolbar-title>
           <nuxt-link to="/">Nodebird</nuxt-link>
         </v-toolbar-title>
-        <v-space />
+        <v-spacer />
         <v-toolbar-items>
           <v-text-field
             label="검색"
@@ -22,8 +22,6 @@
         </v-toolbar-items>
       </v-toolbar>
     </nav>
-    <div>{{ name }}</div>
-    <v-btn @click="onChangeName">바이</v-btn>
     <v-row no-gutters>
       <v-col cols="12" xs="12" md="4">
         <login-form />
@@ -42,16 +40,6 @@ export default {
   components: {
     LoginForm
   },
-  computed: {
-    name() {
-      return this.$store.state.posts.name;
-    }
-  },
-  methods: {
-    onChangeName() {
-      this.$store.commit("posts/BYE");
-    }
-  }
 };
 </script>
 
