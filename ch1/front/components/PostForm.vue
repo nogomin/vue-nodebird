@@ -9,8 +9,9 @@
           clearable
           label="어떤 신기한 일이 있었나요?"
           :hide-details="hideDetails"
-          :success-message="successMessages"
+          :success-messages="successMessages"
           :success="success"
+          :rules="[v => !!v.trim() || '내용을 입력하세요.']"
           @input="onChangeTextarea"
         />
         <v-btn type="submit" color="green" absolute right>짹짹</v-btn>

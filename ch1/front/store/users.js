@@ -1,5 +1,7 @@
 export const state = () => ({
   me: null,
+  followList: [],
+  followingList: [],
 });
 
 export const mutations = {
