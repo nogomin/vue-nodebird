@@ -55,7 +55,7 @@ export default {
   methods: {
     onSubmitForm() {
       if(this.$refs.form.validate()) {
-        this.$store.dispatch('users/login', {
+        this.$store.dispatch('users/logIn', {
           email: this.email,
           nickname: 'nogomin',
         })    
