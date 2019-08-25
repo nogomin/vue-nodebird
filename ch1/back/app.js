@@ -1,31 +1,48 @@
 const express = require('express');
 const cors = require('cors');
 const bcrypt = require('bcrypt');
+const passport = require('passport');
+const session = require('express-session');
+const cookie = require('cookie-parser');
+const morgan = require('morgan');
 
 const db = require('./models');
+const passportConfig = require('./passport');
+const userRouter = require('./routes/user');
 const app = express();
 
-db.sequelize.sync();
+db.sequelize.sync({force: true}); // force 하면 디비 스키마 변경한 내용이 반영된다. 실무 배포에선 절대안됨. 마이그레이션 이용할것
+passportConfig();
 
-app.use(cors('http://localhost:3000'));
+app.use(morgan('dev'));
+app.use(cors({
+  origin: 'http://localhost:3000',
+  credentials: true, //쿠키를 받을수 있도록 설정
+}));
 app.use(express.json()); // json을 body로 받을수 있게함 (json parser)
+app.use(express.urlencoded({ extended: false }));
+app.use(cookie('cookiesecret'));
+app.use(session({
+  resave: false,
+  saveUninitialized: false,
+  secret: 'cookiesecret',
+  cookie: {
+    httpOnly: true,
+    secure: false,
+  }
+}));
+app.use(passport.initialize());
+app.use(passport.session());
 
 app.get('/', (req, res) => {
-  res.send('안녕 test');
+  res.status(200).send('안녕 test');
 });
 
-app.post('/user', async (req, res) => {
-  try {
-    const hash = await bcrypt.hash(req.body.password, 12); //숫자가 높을수록 보안성 향상, 단 느려짐.. 12가 적당
-    const newUser = await db.User.create({
-      email: req.body.email,
-      password: hash,
-      nickname: req.body.nickname,
-    });
-    res.status(201).json(newUser); // HTTP STATUS CODE : 200은 그냥 성공, 201은 성공적으로 생성됐다는 의미
-  } catch(err) {
-    console.log(err);
-    next(err);
+app.use('/user', userRouter);
+
+app.post('/post', (req, res) => {
+  if (req.isAuthenticated()) {
+
   }
 })
 

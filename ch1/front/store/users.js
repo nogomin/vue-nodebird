@@ -57,14 +57,40 @@ export const actions = {
       email: payload.email,
       nickname: payload.nickname,
       password: payload.password,
+    }, {
+      withCredentials: true, // 서버가 서로 다를경우 쿠키전송을 위한 옵션값
+    })
+    .then((res) => {
+      commit('setMe', res.data);
+    })
+    .catch((err) => {
+      console.error(err);
     });
-    commit('setMe', payload);
   },
   logIn({ commit }, payload) {
-    commit('setMe', payload);
+    this.$axios.post('http://localhost:3085/user/login', {
+      email: payload.email,
+      password: payload.password,
+    }, {
+      withCredentials: true, // 서버가 서로 다를경우 쿠키전송을 위한 옵션값
+    })
+    .then((res) => {
+      commit('setMe', res.data);
+    })
+    .catch((err) => {
+      console.error(err);
+    });
   },
-  logOut({ commit }, payload) {
-    commit('setMe', null);
+  logOut({ commit }) {
+    this.$axios.post('http://localhost:3085/user/logout', {}, {
+      withCredentials: true, // 서버가 서로 다를경우 쿠키전송을 위한 옵션값
+    })
+    .then((data) => {
+      commit('setMe', null);
+    })
+    .catch((err) => {
+      console.error(err);
+    });
   },
   changeNickname({ commit }, payload) {
     commit('changeNickname', payload);
