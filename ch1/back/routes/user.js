@@ -2,12 +2,13 @@ const express = require('express');
 const bcrypt = require('bcrypt');
 const passport = require('passport');
 const db = require('../models');
+const { isLoggedIn, isNotLoggedIn } = require('./middlewares');
 
 const router = express.Router();
 
 router.post('/');
 
-router.post('/', async (req, res, next) => { // app.js에 app.use('/user', usersRouter); <-- 이부분과 주소가 합쳐지므로 /user를 붙이지 말것
+router.post('/', isNotLoggedIn, async (req, res, next) => { // app.js에 app.use('/user', usersRouter); <-- 이부분과 주소가 합쳐지므로 /user를 붙이지 말것
   try {
     const hash = await bcrypt.hash(req.body.password, 12); //숫자가 높을수록 보안성 향상, 단 느려짐.. 12가 적당
     const exUser = await db.User.findOne({
@@ -33,7 +34,7 @@ router.post('/', async (req, res, next) => { // app.js에 app.use('/user', users
   }
 })
 
-router.post('/login', (req, res, next) => {
+router.post('/login', isNotLoggedIn, (req, res, next) => {
   passport.authenticate('local', (err, user, info) => {
     if (err) {
       console.error(err);
@@ -52,7 +53,7 @@ router.post('/login', (req, res, next) => {
   })(req, res, next);
 });
 
-router.post('/logout', (req, res) => {
+router.post('/logout', isLoggedIn, (req, res) => {
   if (req.isAuthenticated()) {
     req.logout();
     req.session.destroy(); // 선택사항

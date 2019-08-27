@@ -1,6 +1,7 @@
 export const state = () => ({
   mainPosts: [],
   hasMorePost: true,
+  imagePaths: [],
 });
 
 //virtualized list : vue-virtual-scroll-list 가져다 쓸것.
@@ -33,6 +34,12 @@ export const mutations = {
     }));
     state.mainPosts = state.mainPosts.concat(fakePosts);
     state.hasMorePost = fakePosts.length === limit;
+  },
+  concatImagePaths(state, payload) {
+    state.imagePaths = state.imagePaths.concat(payload); //사용자가 변심으로 추가로 이미지를 등록하는 경우를 위한 concat처리
+  },
+  removeImagePaths(state, payload) {
+    state.imagePaths.splice(payload, 1);
   }
 };
 
@@ -50,5 +57,16 @@ export const actions = {
     if (state.hasMorePost) {
       commit('loadPosts');
     }
+  },
+  uploadImages({ commit }, payload) {
+    this.$axios.post('http://localhost:3085/post/images', payload, {
+      withCredentials: true,
+    })
+      .then((res) => {
+        commit('concatImagePaths', res.data);
+      })
+      .catch(() => {
+
+      })
   }
 };

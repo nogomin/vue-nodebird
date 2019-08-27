@@ -9,9 +9,10 @@ const morgan = require('morgan');
 const db = require('./models');
 const passportConfig = require('./passport');
 const userRouter = require('./routes/user');
+const postRouter = require('./routes/post');
 const app = express();
 
-db.sequelize.sync({force: true}); // force 하면 디비 스키마 변경한 내용이 반영된다. 실무 배포에선 절대안됨. 마이그레이션 이용할것
+db.sequelize.sync(); // {force: true} 하면 디비 스키마 변경한 내용이 반영된다. 실무 배포에선 절대안됨. 마이그레이션 이용할것
 passportConfig();
 
 app.use(morgan('dev'));
@@ -39,6 +40,7 @@ app.get('/', (req, res) => {
 });
 
 app.use('/user', userRouter);
+app.use('/post', postRouter);
 
 app.post('/post', (req, res) => {
   if (req.isAuthenticated()) {
