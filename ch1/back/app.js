@@ -20,6 +20,8 @@ app.use(cors({
   origin: 'http://localhost:3000',
   credentials: true, //쿠키를 받을수 있도록 설정
 }));
+
+app.use('/', express.static('uploads'));
 app.use(express.json()); // json을 body로 받을수 있게함 (json parser)
 app.use(express.urlencoded({ extended: false }));
 app.use(cookie('cookiesecret'));

@@ -59,13 +59,6 @@ export default {
       if (this.$refs.form.validate()) {
         this.$store.dispatch('posts/add', {
           content: this.content,
-          User: {
-            nickname: this.me.nickname,
-          },
-          Comments: [],
-          Images: [],
-          id: Date.now(),
-          createdAt: Date.now(),
         })
         .then(() => {
           this.content = '';
@@ -89,7 +82,7 @@ export default {
       });
       this.$store.dispatch('posts/uploadImages', imageFormData);
     },
-    onRemoveImage() {
+    onRemoveImage(index) {
       this.$store.commit('posts/removeImagePaths', index);
     }
   }
