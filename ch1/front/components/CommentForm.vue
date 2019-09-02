@@ -46,12 +46,8 @@ export default {
     onSubmitForm() {
       if (this.$refs.form.validate()) {
         this.$store.dispatch('posts/addComment', {
-          id: Date.now(),
           postId: this.postId,
           content: this.content,
-          User: {
-            nickname: this.me.nickname,
-          }
         })
           .then(()=> {
             this.content = '';

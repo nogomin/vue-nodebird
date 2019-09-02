@@ -33,7 +33,7 @@ export default {
     }
   },
   fetch({ store }) { //10개를 미리 받아옴
-    store.dispatch('posts/loadPosts');
+     return store.dispatch('posts/loadPosts'); // return 반드시 써줄것!!
   },
   mounted() {
     window.addEventListener('scroll', this.onScroll); //window는 created()에서는 못씀.

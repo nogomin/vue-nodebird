@@ -6,7 +6,10 @@ const { isLoggedIn, isNotLoggedIn } = require('./middlewares');
 
 const router = express.Router();
 
-router.post('/');
+router.get('/', isLoggedIn, async(req, res, next) => {
+  const user = req.user;
+  res.json(user);
+})
 
 router.post('/', isNotLoggedIn, async (req, res, next) => { // app.js에 app.use('/user', usersRouter); <-- 이부분과 주소가 합쳐지므로 /user를 붙이지 말것
   try {

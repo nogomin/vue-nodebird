@@ -1,3 +1,5 @@
+import Vue from 'vue';
+
 export const state = () => ({
   mainPosts: [],
   hasMorePost: true,
@@ -5,8 +7,8 @@ export const state = () => ({
 });
 
 //virtualized list : vue-virtual-scroll-list 가져다 쓸것.
-const totalPosts = 51;
-const limit = 10;
+//const totalPosts = 51;
+//const limit = 10;
 
 export const mutations = {
   addMainPost(state, payload) {
@@ -17,24 +19,18 @@ export const mutations = {
     const index = state.mainPosts.findIndex(v => v.id === payload.id);
     state.mainPosts.splice(index, 1);
   },
-  addComment(state, payload) {
+  loadComments(state, payload) {
     const index = state.mainPosts.findIndex(v => v.id === payload.postId);
+    //state.mainPosts[index].Comments = payload.data; <-- 반응성이 깨져버리는 코드
+    Vue.set(state.mainPosts[index], 'Comments', payload.data);
+  },
+  addComment(state, payload) {
+    const index = state.mainPosts.findIndex(v => v.id === payload.PostId);
     state.mainPosts[index].Comments.unshift(payload);
   },
-  loadPosts(state) {
-    const diff = totalPosts - state.mainPosts.length; // 아직 안 불러온 게시글 수
-    const fakePosts = Array(diff > limit ? limit : diff).fill().map(v => ({
-      id: Math.random().toString(),
-      User: {
-        id: 1,
-        nickname: 'nogomin',
-      },
-      content: `Hello infinite scrolling~ ${Math.random()}`,
-      Comments: [],
-      Images: [],
-    }));
-    state.mainPosts = state.mainPosts.concat(fakePosts);
-    state.hasMorePost = fakePosts.length === limit;
+  loadPosts(state, payload) {
+    state.mainPosts = state.mainPosts.concat(payload);
+    state.hasMorePost = payload.length === 10;
   },
   concatImagePaths(state, payload) {
     state.imagePaths = state.imagePaths.concat(payload); //사용자가 변심으로 추가로 이미지를 등록하는 경우를 위한 concat처리
@@ -60,14 +56,52 @@ export const actions = {
       });
   },
   remove({ commit}, payload) {
+    this.$axios.delete(`http://localhost:3085/post/${payload.postId}`, {
+      withCredentials: true,
+    })
+      .then(() => {
+        commit('removeMainPost', payload.postId);
+      })
+      .catch(() => {
+
+      })
     commit('removeMainPost', payload);
   },
   addComment({ commit }, payload) {
+    this.$axios.post(`http://localhost:3085/post/${payload.postId}/comment`, {
+      content: payload.content,
+    }, {
+      withCredentials: true,
+    })
+      .then((res) => {
+        commit('addComment', res.data);
+      })
+      .catch(() => {
+        
+      });
     commit('addComment', payload);
   },
-  loadPosts({ commit, state }, payload) {
+  loadComments({ commit }, payload) {
+    this.$axios.get(`http://localhost:3085/post/${payload.postId}/comments`)
+      .then((res) => {
+        commit('loadComments', {
+          postId: payload.postId,
+          data: res.data,
+        });
+      })
+      .catch((err) => {
+        console.error(err);
+      })
+  },
+  async loadPosts({ commit, state }, payload) {
     if (state.hasMorePost) {
-      commit('loadPosts');
+      try {
+        const res = await this.$axios.get(`http://localhost:3085/posts?offset=${state.mainPosts.length}&limit=10`)
+        commit('loadPosts', res.data);
+        return;
+      } catch(err) {
+        console.error(err);
+      }
     }
   },
   uploadImages({ commit }, payload) {
@@ -77,8 +111,8 @@ export const actions = {
       .then((res) => {
         commit('concatImagePaths', res.data);
       })
-      .catch(() => {
-
+      .catch((err) => {
+        console.error(err);
       })
   }
 };
