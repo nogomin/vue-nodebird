@@ -44,6 +44,7 @@ router.post('/login', isNotLoggedIn, (req, res, next) => {
       return next(err);
     }
     if (info) {
+      console.log(info);
       return res.status(401).send(info.reason);
     }
     return req.login(user, async (err) => { //세션에다 사용자 정보 저장 ( 어떻게? serializeUser)

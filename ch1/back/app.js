@@ -1,6 +1,5 @@
 const express = require('express');
 const cors = require('cors');
-const bcrypt = require('bcrypt');
 const passport = require('passport');
 const session = require('express-session');
 const cookie = require('cookie-parser');
@@ -10,6 +9,7 @@ const db = require('./models');
 const passportConfig = require('./passport');
 const userRouter = require('./routes/user');
 const postRouter = require('./routes/post');
+const postsRouter = require('./routes/posts');
 const app = express();
 
 db.sequelize.sync(); // {force: true} 하면 디비 스키마 변경한 내용이 반영된다. 실무 배포에선 절대안됨. 마이그레이션 이용할것
@@ -43,12 +43,7 @@ app.get('/', (req, res) => {
 
 app.use('/user', userRouter);
 app.use('/post', postRouter);
-
-app.post('/post', (req, res) => {
-  if (req.isAuthenticated()) {
-
-  }
-})
+app.use('/posts', postsRouter);
 
 app.listen(3085, () => {
   console.log(`backend server ${3085}번 포트에서 작동중`);

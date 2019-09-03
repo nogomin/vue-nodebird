@@ -27,6 +27,7 @@ router.post('/images', isLoggedIn, upload.array('image'),  (req, res) => {
 
 router.post('/', isLoggedIn,  async (req, res) => {
   try {
+    const hashtags = req.body.content.match(/#[^\s#]+/g);
     const newPost = await db.Post.create({
       content: req.body.content,
       UserId: req.user.id,
@@ -57,7 +58,7 @@ router.delete('/:id', async (req, res, next) => {
     await db.Post.destroy({
       where: {
         id: req.params.id,
-      },
+      }, 
     });
     res.send('삭제했습니다.');
   } catch (err) {

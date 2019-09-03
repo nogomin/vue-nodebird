@@ -4,7 +4,7 @@ const db = require('../models');
 
 const router = express.Router();
 
-router.get('/', async (req, res, next) => {
+router.get('/', async (req, res, next) => { // GET /posts?offset=10&limit=10
   try {
     const posts = await db.Post.findAll({
       include: [{

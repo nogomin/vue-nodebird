@@ -16,7 +16,7 @@ export const mutations = {
     state.imagePaths = [];
   },
   removeMainPost(state, payload) {
-    const index = state.mainPosts.findIndex(v => v.id === payload.id);
+    const index = state.mainPosts.findIndex(v => v.id === payload.postId);
     state.mainPosts.splice(index, 1);
   },
   loadComments(state, payload) {
@@ -44,7 +44,7 @@ export const actions = {
   add({ commit, state }, payload) {
     this.$axios.post('http://localhost:3085/post', {
       content: payload.content,
-      imagePaths: state.imagePaths,
+      image: state.imagePaths,
     }, {
       withCredentials: true,
     })
@@ -76,8 +76,8 @@ export const actions = {
       .then((res) => {
         commit('addComment', res.data);
       })
-      .catch(() => {
-        
+      .catch((err) => {
+        console.error(err);
       });
     commit('addComment', payload);
   },
@@ -94,10 +94,12 @@ export const actions = {
       })
   },
   async loadPosts({ commit, state }, payload) {
+    console.log('loadPosts');
     if (state.hasMorePost) {
       try {
         const res = await this.$axios.get(`http://localhost:3085/posts?offset=${state.mainPosts.length}&limit=10`)
         commit('loadPosts', res.data);
+        console.log(state);
         return;
       } catch(err) {
         console.error(err);

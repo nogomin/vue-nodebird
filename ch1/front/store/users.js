@@ -55,12 +55,11 @@ export const actions = {
   async loadUser({ state, commit }) {
     console.log('loadUser');
     try {
-      const res = await this.$axios.get('/user', {
+      const res = await this.$axios.get('http://localhost:3085/user', {
         withCredentials: true,
       });
       console.log(res.data);
       commit('setMe', res.data);
-      console.log(state);
     } catch (err) {
       console.error(err);
     }
