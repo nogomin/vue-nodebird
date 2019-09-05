@@ -37,6 +37,7 @@
 import FollowList from "~/components/FollowList";
 
 export default {
+  //layout : 'admin'  <-- layouts/admin.vue의 화면이 반영된다 (관리자용)
   components: {
     FollowList
   },

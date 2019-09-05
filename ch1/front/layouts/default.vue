@@ -1,4 +1,4 @@
-<template>
+<template> <!-- nav 같이 페이지마다 공통된 사항들을 관리하는 곳 -->
   <v-app>
     <nav>
       <v-toolbar dark color="green">
@@ -28,11 +28,11 @@
       </v-toolbar>
     </nav>
     <v-row no-gutters>
-      <v-col cols="12" xs="12" md="4">
+      <v-col cols="12" md="4">
         <login-form />
       </v-col>
-      <v-col cols="12" xs="12" md="8">
-        <nuxt />
+      <v-col cols="12" md="8">
+        <nuxt /> <!--라우터 뷰 역할 -->
       </v-col>
     </v-row>
   </v-app>

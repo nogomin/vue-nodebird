@@ -1,0 +1,11 @@
+# package.json
+npm init 
+
+# Vue, Nuxt
+npm i vue nuxt 
+
+# Vuetify
+npm i vuetify @nuxtjs/vuetify
+
+# Axios
+npm i @nuxtjs/axios axios
