@@ -32,7 +32,7 @@
           </template>
           <div style="background: white">
             <v-btn dark color="red" @click="onRemovePost">삭제</v-btn>
-            <v-btn dark color="orange" @click="onEditPost">수정</v-btn>
+            <v-btn text color="orange" @click="onEditPost">수정</v-btn>
           </div>
         </v-menu>
       </v-card-actions>
@@ -61,10 +61,10 @@ export default {
   components: {
     CommentForm,
   },
-  props: {
+  props: { // props는 최대한 자세히 써준다.
     post: {
       type: Object,
-      required: true,
+      required: true, // 부모가 필수적으로 넘겨줘야함을 의미
     },
   },
   data() {

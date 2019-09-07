@@ -37,7 +37,7 @@
 export default {
   data() {
     return {
-      valid: false,
+      valid: false, // rules를 다 통과하면 true가 된다,  :disabled에 활용하면 좋다
       email: "",
       password: "",
       emailRules: [

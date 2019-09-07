@@ -53,7 +53,7 @@ export default {
     return {
       valid: false,
       email: "",
-      emailRules: [
+      emailRules: [ // 매개변수가 v로 오고, [ 조건함수 || 에러메시지 ]
         v => !!v || "이메일은 필수입니다.",
         v => /.+@.+/.test(v) || "이메일이 유효하지 않습니다."
       ],
@@ -86,7 +86,7 @@ export default {
   },
   methods: {
     onSubmitForm() {
-      if (this.$refs.form.validate()) {
+      if (this.$refs.form.validate()) { // vuetify에서 제공하는 validate함수
         this.$store.dispatch('users/signUp', {
           nickname: this.nickname,
           email: this.email,

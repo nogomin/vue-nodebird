@@ -10,7 +10,7 @@ const totalFollowers = 8;
 const totalFollowings = 6;
 const limit = 3;
 
-export const mutations = {
+export const mutations = { // mutations에는 동기 작업만 해준다. actions에서 같이 처리해도 되지만 actions는 devtool에서 디버깅할때 안나와서 불편
   setMe(state, payload) {
     state.me = payload;
   },
@@ -51,7 +51,7 @@ export const mutations = {
   },
 }
 
-export const actions = {
+export const actions = { // test(context, payload) 형식, context: commit, dispatch, state, rootState, getters, rootGetters
   async loadUser({ state, commit }) {
     console.log('loadUser');
     try {

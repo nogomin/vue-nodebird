@@ -16,7 +16,8 @@ export default {
   },
   computed: {
     post() {
-      return this.$store.state.posts.mainPosts.find( v => v.id === parseInt(this.$route.params.id, 10));
+      return this.$store.state.posts.mainPosts.find( v => v.id === parseInt(this.$route.params.id, 10)); 
+      //params type은 string, 파일이 _name이라면 this.$route.params.name
     }
   }
 }

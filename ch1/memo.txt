@@ -9,3 +9,6 @@ npm i vuetify @nuxtjs/vuetify
 
 # Axios
 npm i @nuxtjs/axios axios
+
+#eslint
+npm i -D eslint eslint-plugin-vue
