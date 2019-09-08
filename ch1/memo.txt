@@ -10,5 +10,47 @@ npm i vuetify @nuxtjs/vuetify
 # Axios
 npm i @nuxtjs/axios axios
 
-#eslint
+# eslint
 npm i -D eslint eslint-plugin-vue
+
+# express
+npm i express
+npm i express-session
+
+# cookie
+npm i cookie-parser
+
+# logging
+npm i morgan
+
+# ORM
+npm i sequelize
+npm i -D sequelize-cli
+npx sequelize init
+
+# mysql(드라이버)
+npm i mysql2
+
+# Hot reload (백엔드 서버 자동 재시작, 브라우저에선 새로고침 해줘야됨)
+npm i -D nodemon
+
+# cors
+npm i cors
+
+# bcrypt
+(선택) npm install --global --production windows-build-tools (윈도우 사용시 에러발생 대비)
+npm i bcrypt
+
+# passport
+npm i passport passport-local
+
+# image upload
+npm i multer
+
+
+----------------------------------------
+npm outdated : 버전 확인용
+npm update : 최신 버전으로 업데이트
+npm audit fix : found vlunerabilities를 발견시 수정해준다
+
+npx sequelize db:create <-- mysql에 database 생성

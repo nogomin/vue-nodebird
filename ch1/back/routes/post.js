@@ -6,7 +6,7 @@ const { isLoggedIn } = require('./middlewares');
 const router = express.Router();
 
 const upload = multer({
-  storage: multer.diskStorage({
+  storage: multer.diskStorage({ //file storage(e.g AWS S3) 쓰기 전까지 uploads 폴더에 저장
     destination(req, file, done) {
       done(null, 'uploads');
     },
@@ -36,12 +36,12 @@ router.post('/', isLoggedIn,  async (req, res) => {
      const result = await Promise.all(hashtags.map(tag => db.Hashtag.findOrCreate({ //await 안쓰고 map을 쓴경우 promise가 배열형태로 되어있음
         where: { name: tag.slice(1).toLowerCase() },
       })));
-      await newPost.addHashtags(result.map(r => r[0]));
+      await newPost.addHashtags(result.map(r => r[0])); //addHashtags()는 시퀄라이즈가 관계설정할때 생기는 메서드
       //db.sequelize.query('SELECT * FROM ...') <-- 쿼리 직접작성 가능
     }
     const fullPost = await db.Post.findOne({
       where: { id: newPost.id },
-      include: [{
+      include: [{ // 관계 파악
         model: db.User,
         attributes: ['id', 'nickname'],
       }],
@@ -83,7 +83,7 @@ router.get('/:id/comments', async (req, res, next) => {
         model: db.User,
         attributes: ['id', 'nickname'],
       }],
-      order: [['createdAt', 'ASC']],
+      order: [['createdAt', 'ASC']], //2차원 배열인거 조심..
     });
     res.json(comments);
   } catch (err) {
@@ -105,6 +105,7 @@ router.post('/:id/comment', isLoggedIn, async (req, res, next) => {
       UserId: req.user.id,
       content: req.body.content,
     });
+    //await post.addComment(newComment.id); <-- DB를 2번 요청해서 비효율
     const comment = await db.Comment.findOne({
       where : {
         id: newComment.id,

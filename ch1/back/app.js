@@ -21,9 +21,9 @@ app.use(cors({
   credentials: true, //쿠키를 받을수 있도록 설정
 }));
 
-app.use('/', express.static('uploads'));
+app.use('/', express.static('uploads')); 
 app.use(express.json()); // json을 body로 받을수 있게함 (json parser)
-app.use(express.urlencoded({ extended: false }));
+app.use(express.urlencoded({ extended: false })); // form parser
 app.use(cookie('cookiesecret'));
 app.use(session({
   resave: false,

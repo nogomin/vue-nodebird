@@ -1,7 +1,7 @@
 <template>
   <div style="margin-bottom: 20px;">
     <v-card>
-      <v-image />
+      <!-- <v-image /> -->
       <v-card-title>
         <div>
           <h3>

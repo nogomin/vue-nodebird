@@ -9,7 +9,7 @@ const router = express.Router();
 router.get('/', isLoggedIn, async(req, res, next) => {
   const user = req.user;
   res.json(user);
-})
+});
 
 router.post('/', isNotLoggedIn, async (req, res, next) => { // app.js에 app.use('/user', usersRouter); <-- 이부분과 주소가 합쳐지므로 /user를 붙이지 말것
   try {
@@ -20,7 +20,7 @@ router.post('/', isNotLoggedIn, async (req, res, next) => { // app.js에 app.use
       }
     });
     if (exUser) {
-      return res.status(403).json({
+      return res.status(403).json({ //return 반드시 적기, 안적으면 can't set Headers after they are sent 에러 발생
         errorCode: 1, //임의로 정하는 에러코드
         messsage: '이미 회원가입 된 이메일입니다.'
       })
@@ -52,7 +52,7 @@ router.post('/login', isNotLoggedIn, (req, res, next) => {
         console.error(err);
         return next(err);
       }
-      return res.json(user); //front로 사용자정보 넘겨주기
+      return res.json(user); //front로 사용자정보 넘겨주기 [body] , req.login에서 쿠키를 [header]에 심어준다
     }); // passport.initialize()에서 실행된 req.login 메서드임
   })(req, res, next);
 });

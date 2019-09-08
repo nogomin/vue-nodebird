@@ -51,8 +51,8 @@ export const actions = {
       .then((res) => {
         commit('addMainPost', res.data); //commit('addMainPost', payload, { root: true}) 하면 index.js에 있는 addMainPost matations함수 호출
       })
-      .catch(() => {
-
+      .catch((err) => {
+        console.err(err);
       });
   },
   remove({ commit}, payload) {
@@ -65,7 +65,6 @@ export const actions = {
       .catch(() => {
 
       })
-    commit('removeMainPost', payload);
   },
   addComment({ commit }, payload) {
     this.$axios.post(`http://localhost:3085/post/${payload.postId}/comment`, {
@@ -79,7 +78,6 @@ export const actions = {
       .catch((err) => {
         console.error(err);
       });
-    commit('addComment', payload);
   },
   loadComments({ commit }, payload) {
     this.$axios.get(`http://localhost:3085/post/${payload.postId}/comments`)
@@ -94,7 +92,6 @@ export const actions = {
       })
   },
   async loadPosts({ commit, state }, payload) {
-    console.log('loadPosts');
     if (state.hasMorePost) {
       try {
         const res = await this.$axios.get(`http://localhost:3085/posts?offset=${state.mainPosts.length}&limit=10`)
