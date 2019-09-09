@@ -53,12 +53,12 @@ export const mutations = { // mutations에는 동기 작업만 해준다. action
 
 export const actions = { // test(context, payload) 형식, context: commit, dispatch, state, rootState, getters, rootGetters
   async loadUser({ state, commit }) {
-    console.log('loadUser');
+    //console.log('loadUser');
     try {
       const res = await this.$axios.get('http://localhost:3085/user', {
         withCredentials: true,
       });
-      console.log(res.data);
+      //console.log(res.data);
       commit('setMe', res.data);
     } catch (err) {
       console.error(err);

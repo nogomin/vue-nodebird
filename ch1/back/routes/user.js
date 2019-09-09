@@ -8,8 +8,36 @@ const router = express.Router();
 
 router.get('/', isLoggedIn, async(req, res, next) => {
   const user = req.user;
+  console.log('back user', user);
   res.json(user);
 });
+
+router.get('/:id', async (req, res, next) => {
+  try {
+    const user = await db.User.findOne({
+      where: { id: parseInt(req.params.id, 10) },
+      include: [{
+        model: db.Post,
+        as: 'Posts',
+        attributes: ['id'],
+      }, {
+        model: db.User,
+        as: 'Followings',
+        attributes: ['id'],
+      }, {
+        model: db.User,
+        as: 'Followers',
+        attributes: ['id'],
+      }],
+      attributes: ['id', 'nickname'],
+    });
+    res.json(user);
+  } catch (err) {
+    console.error(err);
+    next(err);
+  }
+});
+
 
 router.post('/', isNotLoggedIn, async (req, res, next) => { // app.js에 app.use('/user', usersRouter); <-- 이부분과 주소가 합쳐지므로 /user를 붙이지 말것
   try {

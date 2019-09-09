@@ -96,7 +96,7 @@ export const actions = {
       try {
         const res = await this.$axios.get(`http://localhost:3085/posts?offset=${state.mainPosts.length}&limit=10`)
         commit('loadPosts', res.data);
-        console.log(state);
+        //console.log(state);
         return;
       } catch(err) {
         console.error(err);

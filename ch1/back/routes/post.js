@@ -21,7 +21,7 @@ const upload = multer({
 
 router.post('/images', isLoggedIn, upload.array('image'),  (req, res) => {
   //req.files = [ {filename: 1.jpg }, { filename: 2.jpg }]
-  console.log(req.files);
+  //console.log(req.files);
   res.json(req.files.map(v => v.filename)); 
 });
 
@@ -39,11 +39,23 @@ router.post('/', isLoggedIn,  async (req, res) => {
       await newPost.addHashtags(result.map(r => r[0])); //addHashtags()는 시퀄라이즈가 관계설정할때 생기는 메서드
       //db.sequelize.query('SELECT * FROM ...') <-- 쿼리 직접작성 가능
     }
+    if (req.body.image) {
+      if (Array.isArray(req.body.image)) { // 한개일때 배열에 안담기는 버그 방지
+        await Promise.all(req.body.image.map((image) => {
+          return db.Image.create({ src: image, PostId: newPost.id });
+          // newPost.addImages(images) <-- 비효율적
+        }));
+      } else {
+        await db.Image.create({ src: req.body.image, PostId: newPost.id });
+      }
+    }
     const fullPost = await db.Post.findOne({
       where: { id: newPost.id },
       include: [{ // 관계 파악
         model: db.User,
         attributes: ['id', 'nickname'],
+      }, {
+        model: db.Image,
       }],
     });
     return res.json(fullPost);

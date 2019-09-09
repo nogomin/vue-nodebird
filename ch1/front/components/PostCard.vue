@@ -1,7 +1,7 @@
 <template>
   <div style="margin-bottom: 20px;">
     <v-card>
-      <!-- <v-image /> -->
+      <post-images :images="post.Images || []"/>
       <v-card-title>
         <div>
           <h3>
@@ -56,10 +56,12 @@
 
 <script>
 import CommentForm from '~/components/CommentForm';
+import PostImages from '~/components/PostImages';
 
 export default {
   components: {
     CommentForm,
+    PostImages,
   },
   props: { // props는 최대한 자세히 써준다.
     post: {
