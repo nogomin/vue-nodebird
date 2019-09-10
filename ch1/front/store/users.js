@@ -55,7 +55,7 @@ export const actions = { // test(context, payload) 형식, context: commit, disp
   async loadUser({ state, commit }) {
     //console.log('loadUser');
     try {
-      const res = await this.$axios.get('http://localhost:3085/user', {
+      const res = await this.$axios.get('/user', {
         withCredentials: true,
       });
       //console.log(res.data);
@@ -65,7 +65,7 @@ export const actions = { // test(context, payload) 형식, context: commit, disp
     }
   },
   signUp({ commit, state }, payload) {
-    this.$axios.post('http://localhost:3085/user', {
+    this.$axios.post('/user', {
       email: payload.email,
       nickname: payload.nickname,
       password: payload.password,
@@ -80,7 +80,7 @@ export const actions = { // test(context, payload) 형식, context: commit, disp
     });
   },
   logIn({ commit }, payload) {
-    this.$axios.post('http://localhost:3085/user/login', {
+    this.$axios.post('/user/login', {
       email: payload.email,
       password: payload.password,
     }, {
@@ -94,7 +94,7 @@ export const actions = { // test(context, payload) 형식, context: commit, disp
     });
   },
   logOut({ commit }) {
-    this.$axios.post('http://localhost:3085/user/logout', {}, {
+    this.$axios.post('/user/logout', {}, {
       withCredentials: true, // 서버가 서로 다를경우 쿠키전송을 위한 옵션값
     })
     .then((data) => {
